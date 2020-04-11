@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GridsterConfig, GridsterItem, DisplayGrid, GridsterComponentInterface, GridsterItemComponentInterface } from 'angular-gridster2';
-import { StringDecoder } from 'string_decoder';
+// import { BrowserModule } from '@angular/platform-browser';
 
 export interface IComponent {
   pos: Position,
@@ -47,6 +47,8 @@ export class LayoutService {
 
   constructor() {
     this.initLayout();
+    // const browserParams = BrowserModule.arguments;
+    // const bp = true;
   }
 
   appExists(appId: string): boolean {
@@ -125,8 +127,8 @@ export class LayoutService {
     const localStorageSize = localStorage.length;
     for (let i = 0; i < localStorageSize; i++) {
       const appId = localStorage.key(i);
-      const itemString = localStorage.getItem(appId);
-      const position: number[] = this.itemStringToPosition(itemString);
+      const positionString = localStorage.getItem(appId);
+      const position: number[] = this.positionStringToPosition(positionString);
       const restoredItem = {
         cols: 1,
         rows: 1,
@@ -138,7 +140,7 @@ export class LayoutService {
     }
   }
 
-  private itemStringToPosition(itemString: string): number[] {
+  private positionStringToPosition(itemString: string): number[] {
     const xMarker: number = itemString.search('#x:');
     const yMarker: number = itemString.search('#y:');
     const xString: string = itemString.substring(xMarker + '#x:'.length, yMarker);
