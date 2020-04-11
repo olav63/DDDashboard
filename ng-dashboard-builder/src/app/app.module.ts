@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { Example1Component } from './components/example1/example1.component';
 import { Example2Component } from './components/example2/example2.component';
+import { Example3Component } from './components/example3/example3.component';
 import { LayoutItemDirective } from './directives/layout-item.directive';
 
 @NgModule({
@@ -14,6 +15,7 @@ import { LayoutItemDirective } from './directives/layout-item.directive';
     LayoutComponent,
     Example1Component,
     Example2Component,
+    Example3Component,
     LayoutItemDirective
   ],
   imports: [
@@ -24,7 +26,8 @@ import { LayoutItemDirective } from './directives/layout-item.directive';
   bootstrap: [AppComponent],
   entryComponents: [
     Example1Component,
-    Example2Component
+    Example2Component,
+    Example3Component
   ]
 })
 export class AppModule { }

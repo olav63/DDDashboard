@@ -1,14 +1,18 @@
 <div class="toolbar">
-  <button (click)="layoutService.addItem()">Add Item</button>
-  <div class="draggable" draggable="true" (dragend)="layoutService.dropItem('example1')">Example 1</div>
-  <div class="draggable" draggable="true" (dragend)="layoutService.dropItem('example2')">Example 2</div>
+  <button (click)="layoutService.addItem('App A', 0, 0)">+ App A</button>
+  <button (click)="layoutService.addItem('App B', 0, 0)">+ App B</button>
+  <button (click)="layoutService.addItem('App C',0 ,0 )">+ App C</button>
+  <!-- <div class="draggable" draggable="true" (dragend)="layoutService.dropItem('App A')">App A</div>
+  <div class="draggable" draggable="true" (dragend)="layoutService.dropItem('App B')">App B</div>
+  <div class="draggable" draggable="true" (dragend)="layoutService.dropItem('App C')">App C</div> -->
 </div>
 <gridster [options]="options">
   <gridster-item *ngFor="let item of layout"
     [item]="item"
-    (dragover)="layoutService.setDropId(item.id)">
-    <ng-container appLayoutItem [componentRef]="layoutService.getComponentRef(item.id)"></ng-container>
-    <div>position: {{item.id}}</div>
-    <button (click)="layoutService.deleteItem(item.id)">Delete Item</button>
+    (dragover)="layoutService.setDropId(item.appId)">
+    <ng-container appLayoutItem [componentRef]="layoutService.getComponentRef(item.componentRef)"></ng-container>
+    <div>position: [{{item.x}}, {{item.y}}]</div>
+    <div>app: {{item.appId}}</div>
+    <button (click)="layoutService.deleteItem(item.appId)">x</button>
   </gridster-item>
 </gridster>

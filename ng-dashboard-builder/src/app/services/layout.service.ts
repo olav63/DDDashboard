@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { GridsterConfig, GridsterItem, DisplayGrid, GridsterComponentInterface } from 'angular-gridster2';
-import { UUID } from 'angular2-uuid';
 
 export interface IComponent {
   pos: Position,
@@ -22,10 +21,11 @@ export class LayoutService {
     initCallback: this.initCallback,
     itemChangeCallback: this.itemChangeCallback,
     dropOverItemsCallback: this.dropOverItemsCallback,
-    gridType: "fixed",
+    emptyCellDropCallback: this.emptyCellDropCallback,
+    gridType: "scrollVertical",
     swap: false,
     pushItems: false,
-    displayGrid: DisplayGrid.None,
+    displayGrid: DisplayGrid.Always,
     mobileBreakpoint: 320,
     draggable: {
       enabled: true,
@@ -47,12 +47,13 @@ export class LayoutService {
   public layout: GridsterItem[] = [];
   public components: IComponent[] = [];
 
+  // addCount: number = 0;
+  // deleteCount: number = 0;
+  // userAgent: DeviceInfo;
   dropId: string;
-  addCount: number = 0;
-  deleteCount: number = 0;
 
   constructor() {
-    const positions: Position[] = [{x: 1, y: 1}, {x: 2, y: 2}];
+    const positions: Position[] = [{ x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 2 }];
     this.initLayout(positions);
   }
 
@@ -62,22 +63,26 @@ export class LayoutService {
 
   itemChangeCallback(item: GridsterItem) {
     item.id = "[" + item.x.toString() + ", " + item.y.toString() + "]"
+  }
+
+  emptyCellDropCallback(event: MouseEvent, item: GridsterItem) {
     const bp: boolean = true;
   }
 
-  dropOverItemsCallback (sourceItem: GridsterItem, targetItem: GridsterItem)  {
+  dropOverItemsCallback(sourceItem: GridsterItem, targetItem: GridsterItem) {
     const bp: boolean = true;
   }
 
-  addItem(): void {
-    this.addCount++;
+  addItem(appId: string, x: number, y: number): void {
+    // this.addCount++;
     this.layout.push({
       cols: 1,
       rows: 1,
-      x: 0,
-      y: 0,
-      id: "[0, 0]"
+      x: x,
+      y: y,
+      appId: appId
     });
+    localStorage.setItem("app-id", appId);
   }
 
   initLayout(positions: Position[]) {
@@ -93,7 +98,7 @@ export class LayoutService {
   }
 
   deleteItem(id: string): void {
-    this.deleteCount++;
+    // this.deleteCount++;
     const item = this.layout.find(itm => itm.id === id);
     const itemIndex = this.layout.indexOf(item);
     const newLocal = this.layout.splice(itemIndex, 1);
@@ -109,10 +114,11 @@ export class LayoutService {
   dropItem(dragId: string): void {
     const { components } = this;
     const comp: IComponent = components.find(c => c.id === this.dropId);
-    const updateIdx: number = comp ? components.indexOf(comp) : components.length;
-    const item = this.layout.find(itm => itm.id === dragId);
+    const cmpIndex = components.indexOf(comp);
+    const updateIdx: number = comp ? cmpIndex : components.length;
+    const item = this.layout.find(itm => itm.c === this.dropId);
     const componentItem: IComponent = {
-      pos: item ? (item.x && item.y ? {x: item.x, y: item.y} : null) : null,
+      pos: item ? (item.x && item.y ? { x: item.x, y: item.y } : null) : null,
       id: this.dropId,
       componentRef: dragId
     };

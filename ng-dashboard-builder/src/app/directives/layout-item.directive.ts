@@ -2,10 +2,12 @@ import { Directive , Input, OnChanges, ViewContainerRef, ComponentFactoryResolve
 
 import { Example1Component } from '../components/example1/example1.component';
 import { Example2Component } from '../components/example2/example2.component';
+import { Example3Component } from '../components/example3/example3.component';
 
 const components = {
   example1: Example1Component,
-  example2: Example2Component
+  example2: Example2Component,
+  example3: Example3Component
 };
 
 @Directive({
