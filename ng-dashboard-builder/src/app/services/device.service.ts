@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
-// import { Ng2DeviceService } from 'ng2-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeviceService {
-  constructor(private service: DeviceDetectorService) {}
+  screenWidth: number;
+  screenHeight: number;
+
+  constructor(private service: DeviceDetectorService) {
+  }
 
   public getDeviceCat(): string {
-    let result;
-    if (this.isDesktop) {
+    let result = ' ' + '?';
+    
+    if (this.isDesktop()) {
       result = ' ' + 'desktop';
-    }
-    
-    if (this.isMobile()) {
+    } else if (this.isMobile()) {
       result =  ' ' + 'mobile';
-    }  
-    
-    if (this.isTablet()) {
+    } else if (this.isTablet()) {
       result =  ' ' + 'tablet';
     } 
 

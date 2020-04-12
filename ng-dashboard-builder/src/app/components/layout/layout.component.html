@@ -1,11 +1,27 @@
-<div>
-  <b>Device:</b> {{deviceService.getDeviceCat()}}
-</div>
-<div>
-  <b>OS:</b> {{deviceService.getOS()}} {{deviceService.getOSVersion()}}
-</div>
-<div>
-  <b>Browser:</b> {{deviceService.getBrowser()}} {{deviceService.getBrowserVersion()}}
+<div><div>
+  <table>
+    <tr>
+      <td>
+        <b>Device:</b> {{deviceService.getDeviceCat()}}
+      </td>
+      <td>
+        <b>Sceen size:</b> x: {{getScreenWidth()}} y: {{getScreenHeight()}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b>OS:</b> {{deviceService.getOS()}} {{deviceService.getOSVersion()}}
+      </td>
+      <td>
+        <b>Layout:</b> {{layoutService.getGridType()}} / {{layoutService.getSwap()}} / {{layoutService.getPush()}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b>Browser:</b> {{deviceService.getBrowser()}} {{deviceService.getBrowserVersion()}}
+      </td>
+    </tr>
+  </table>
 </div>
 <br>
 <div class="toolbar">

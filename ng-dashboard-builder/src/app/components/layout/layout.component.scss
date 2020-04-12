@@ -1,15 +1,19 @@
 :host {
 
   .toolbar {
-    height: 40px;
+    height: 60px;
     display: -webkit-box;
     position: relative;
   }
 
   gridster {
     display: flex;
-    height: calc(100vh - 115px);
+    height: calc(90vh - 120px);
     flex-direction: column;
+  }
+
+  table {
+    vertical-align: top;
   }
 
   button {

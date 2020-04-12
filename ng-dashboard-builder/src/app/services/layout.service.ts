@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { GridsterConfig, GridsterItem, DisplayGrid, GridsterComponentInterface, GridsterItemComponentInterface, GridsterComponent } from 'angular-gridster2';
 import { LocalStorageServiceService } from './local-storage.service';
+import { HostListener } from "@angular/core";
+import { DeviceService } from './device.service';
 
 export interface IComponent {
   pos: Position,
@@ -16,9 +18,10 @@ interface Position {
 @Injectable({
   providedIn: 'root'
 })
+
 export class LayoutService {
   public options: GridsterConfig = {
-    gridType: "fixed",
+    gridType: 'fit',
     swap: false,
     pushItems: false,
     displayGrid: DisplayGrid.Always,
@@ -26,7 +29,9 @@ export class LayoutService {
     draggable: {
       enabled: true,
     },
-    compactType: "none",
+    defaultItemCols: 1,
+    defaultItemRows: 1,
+    compactType: 'none',
     minRows: 0,
     maxRows: 5,
     minCols: 0,
@@ -42,11 +47,29 @@ export class LayoutService {
   public layout: GridsterItem[] = [];
 
   dropId: string;
-  gridRowCount: number;
-  gridColumnCount: number;
+  screenHeight: number;
+  screenWidth: number;
 
-  constructor(private localStorageService: LocalStorageServiceService) {
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+    this.screenHeight = window.innerHeight;
+    this.screenWidth = window.innerWidth;
+  }
+
+  constructor(private localStorageService: LocalStorageServiceService, private deviceService: DeviceService) {
     this.initLayout();
+  }
+
+getGridType(): string {
+    return this.options.gridType;
+  }
+
+  getSwap(): string {
+    return this.options.swap === true ? 'swap' : 'no swap';
+  }
+
+  getPush(): string {
+    return this.options.pushItems === true? 'push' : 'no push';
   }
 
   addItem(appId: string, x: number, y: number): void {
@@ -60,15 +83,17 @@ export class LayoutService {
   }
 
   initLayout() {
-    this.gridRowCount = 0;
-    this.gridColumnCount = 0;
     this.readFromLocalStorage();
+    const isMobile = this.deviceService.isMobile();
+    this.options.gridType = isMobile ? 'fit' : 'fixed';
+    this.options.swap = isMobile;
+    this.options.pushItems = isMobile;
   }
 
   deleteItem(id: string): void {
     const item = this.layout.find(itm => itm.appId === id);
     const itemIndex = this.layout.indexOf(item);
-    const newLocal = this.layout.splice(itemIndex, 1);
+    this.layout.splice(itemIndex, 1);
   }
 
   saveToLocalStorage() {
