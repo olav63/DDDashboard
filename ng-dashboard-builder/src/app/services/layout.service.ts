@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { GridsterConfig, GridsterItem, DisplayGrid, GridsterComponentInterface, GridsterItemComponentInterface } from 'angular-gridster2';
-// import { BrowserModule } from '@angular/platform-browser';
+import { GridsterConfig, GridsterItem, DisplayGrid, GridsterComponentInterface, GridsterItemComponentInterface, GridsterComponent } from 'angular-gridster2';
+import { LocalStorageServiceService } from './local-storage.service';
 
 export interface IComponent {
   pos: Position,
@@ -18,8 +18,6 @@ interface Position {
 })
 export class LayoutService {
   public options: GridsterConfig = {
-    itemChangeCallback: this.itemChangeCallback,
-    gridSizeChangedCallback: this.gridSizeChangedCallback,
     gridType: "fixed",
     swap: false,
     pushItems: false,
@@ -29,10 +27,11 @@ export class LayoutService {
       enabled: true,
     },
     compactType: "none",
-    minRows: 1,
+    minRows: 0,
     maxRows: 5,
-    minCols: 1,
+    minCols: 0,
     maxCols: 5,
+    margin: 5,
     fixedRowHeight: 100,
     fixedColWidth: 100,
     resizable: {
@@ -41,27 +40,13 @@ export class LayoutService {
   };
 
   public layout: GridsterItem[] = [];
-  public components: IComponent[] = [];
 
   dropId: string;
+  gridRowCount: number;
+  gridColumnCount: number;
 
-  constructor() {
+  constructor(private localStorageService: LocalStorageServiceService) {
     this.initLayout();
-    // const browserParams = BrowserModule.arguments;
-    // const bp = true;
-  }
-
-  appExists(appId: string): boolean {
-    this.layout.forEach(item => {
-      if (item.appId === appId) {
-        return true;
-      }
-    });
-    return false;
-  }
-
-  itemChangeCallback(item: GridsterItem) {
-    // item.id = "[" + item.x.toString() + ", " + item.y.toString() + "]"
   }
 
   addItem(appId: string, x: number, y: number): void {
@@ -75,6 +60,8 @@ export class LayoutService {
   }
 
   initLayout() {
+    this.gridRowCount = 0;
+    this.gridColumnCount = 0;
     this.readFromLocalStorage();
   }
 
@@ -82,69 +69,13 @@ export class LayoutService {
     const item = this.layout.find(itm => itm.appId === id);
     const itemIndex = this.layout.indexOf(item);
     const newLocal = this.layout.splice(itemIndex, 1);
-    const comp = this.components.find(cmp => cmp.id === id);
-    const compIndex = this.components.indexOf(comp);
-    this.components.splice(compIndex, 1);
-  }
-
-  gridSizeChangedCallback(gridster: GridsterComponentInterface) {
-    return gridster;
-  }
-  
-  setDropId(dropId: string): void {
-    this.dropId = dropId;
-  }
-
-  dropItem(dragId: string): void {
-    const { components } = this;
-    const comp: IComponent = components.find(c => c.id === this.dropId);
-    const cmpIndex = components.indexOf(comp);
-    const updateIdx: number = comp ? cmpIndex : components.length;
-    const item = this.layout.find(itm => itm.c === this.dropId);
-    const componentItem: IComponent = {
-      pos: item ? (item.x && item.y ? { x: item.x, y: item.y } : null) : null,
-      id: this.dropId,
-      componentRef: dragId
-    };
-    this.components = Object.assign([], this.components, { [updateIdx]: componentItem });
   }
 
   saveToLocalStorage() {
-    localStorage.clear();
-    this.layout.forEach(item => {
-      const position = this.positionToString(item.x, item.y);
-      localStorage.setItem(item.appId, position);
-    });
-  }
-
-  private positionToString(x: number, y: number): string {
-    let result = "#x:" + x.toString() + "#y:" + y.toString();
-    return result;
+    this.localStorageService.saveToLocalStorage(this.layout);
   }
 
   readFromLocalStorage() {
-    this.layout.splice(0, this.layout.length);
-    const localStorageSize = localStorage.length;
-    for (let i = 0; i < localStorageSize; i++) {
-      const appId = localStorage.key(i);
-      const positionString = localStorage.getItem(appId);
-      const position: number[] = this.positionStringToPosition(positionString);
-      const restoredItem = {
-        cols: 1,
-        rows: 1,
-        x: position[0],
-        y: position[1],
-        appId: appId
-      };
-      this.layout.push(restoredItem)
-    }
-  }
-
-  private positionStringToPosition(itemString: string): number[] {
-    const xMarker: number = itemString.search('#x:');
-    const yMarker: number = itemString.search('#y:');
-    const xString: string = itemString.substring(xMarker + '#x:'.length, yMarker);
-    const yString: string = itemString.substr(yMarker + '#y:'.length);
-    return [Number(xString), Number(yString)];
+    this.layout = this.localStorageService.readFromLocalStorage();
   }
 }

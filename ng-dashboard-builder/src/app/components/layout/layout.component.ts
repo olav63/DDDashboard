@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { LayoutService, IComponent } from '../../services/layout.service';
+import { DeviceService } from 'src/app/services/device.service';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']
 })
+
 export class LayoutComponent implements OnInit {
 
   get options(): GridsterConfig {
@@ -17,15 +19,9 @@ export class LayoutComponent implements OnInit {
     return this.layoutService.layout;
   }
 
-  get components(): IComponent[] {
-    return this.layoutService.components;
+  constructor(public layoutService: LayoutService, public deviceService: DeviceService) {
   }
-
-  constructor(
-    public layoutService: LayoutService
-  ) { }
 
   ngOnInit() {
   }
-
 }

@@ -1,7 +1,14 @@
+<div>
+  <b>Device:</b> {{deviceService.getDeviceCat()}}
+</div>
+<div>
+  <b>OS:</b> {{deviceService.getOS()}} {{deviceService.getOSVersion()}}
+</div>
+<div>
+  <b>Browser:</b> {{deviceService.getBrowser()}} {{deviceService.getBrowserVersion()}}
+</div>
+<br>
 <div class="toolbar">
-  <!-- <button disabled="layoutService.appExists('app A')" (click)="layoutService.addItem('app A', 0, 0)">+ app A</button>
-  <button disabled="layoutService.appExists('app B')" (click)="layoutService.addItem('app B', 0, 0)">+ app B</button>
-  <button disabled="layoutService.appExists('app C')" (click)="layoutService.addItem('app C',0 ,0 )">+ app C</button> -->
   <button (click)="layoutService.addItem('app A', 0, 0)">+ app A</button>
   <button (click)="layoutService.addItem('app B', 0, 0)">+ app B</button>
   <button (click)="layoutService.addItem('app C',0 ,0 )">+ app C</button>
@@ -9,7 +16,7 @@
   <button (click)="layoutService.readFromLocalStorage()">Restore dashboard</button>
 </div>
 <gridster [options]="options">
-  <gridster-item *ngFor="let item of layout" [item]="item" (dragover)="layoutService.setDropId(item.appId)">
+  <gridster-item *ngFor="let item of layout" [item]="item" >
     <div style="display:table-row;">
       <div><button (click)="layoutService.deleteItem(item.appId)"> x </button></div>
       <br>
