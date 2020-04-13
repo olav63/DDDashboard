@@ -34,7 +34,7 @@
 <gridster [options]="options">
   <gridster-item *ngFor="let item of layout" [item]="item" >
     <div style="display:table-row;">
-      <div><button (click)="layoutService.deleteItem(item.appId)"> x </button></div>
+      <div><button (click)="layoutService.deleteItem(item.appId)"> X </button></div>
       <br>
       <div><b>{{item.appId}}</b> [{{item.x}}, {{item.y}}]</div>
     </div>

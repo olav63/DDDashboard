@@ -24,6 +24,7 @@ export class LayoutService {
     gridType: 'fit',
     swap: false,
     pushItems: false,
+    compactType: 'compactUp&Left',
     displayGrid: DisplayGrid.Always,
     mobileBreakpoint: 120,
     draggable: {
@@ -32,7 +33,6 @@ export class LayoutService {
     itemChangeCallback: this.itemChangeCallback.bind(this),
     defaultItemCols: 1,
     defaultItemRows: 1,
-    compactType: 'none',
     minRows: 0,
     maxRows: 5,
     minCols: 0,
@@ -87,9 +87,11 @@ export class LayoutService {
   initLayout() {
     this.readFromLocalStorage();
     const isMobile = this.deviceService.isMobile();
+    const isTablet = this.deviceService.isTablet();
     this.options.gridType = isMobile ? 'fit' : 'fixed';
     this.options.swap = isMobile;
-    this.options.pushItems = isMobile;
+    this.options.pushItems = isMobile || isTablet;
+    this.options.compactType = isMobile ? 'compactLeft&Up' : 'none';
   }
 
   deleteItem(id: string): void {
