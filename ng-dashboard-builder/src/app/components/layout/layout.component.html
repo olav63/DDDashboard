@@ -28,8 +28,8 @@
   <button (click)="layoutService.addItem('app A', 0, 0)">+ app A</button>
   <button (click)="layoutService.addItem('app B', 0, 0)">+ app B</button>
   <button (click)="layoutService.addItem('app C',0 ,0 )">+ app C</button>
-  <button (click)="layoutService.saveToLocalStorage()">Save dashboard</button>
-  <button (click)="layoutService.readFromLocalStorage()">Restore dashboard</button>
+  <!-- <button (click)="layoutService.saveToLocalStorage()">Save dashboard</button>
+  <button (click)="layoutService.readFromLocalStorage()">Restore dashboard</button> -->
 </div>
 <gridster [options]="options">
   <gridster-item *ngFor="let item of layout" [item]="item" >

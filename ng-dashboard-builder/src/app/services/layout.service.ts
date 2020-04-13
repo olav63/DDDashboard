@@ -29,6 +29,7 @@ export class LayoutService {
     draggable: {
       enabled: true,
     },
+    itemChangeCallback: this.itemChangeCallback.bind(this),
     defaultItemCols: 1,
     defaultItemRows: 1,
     compactType: 'none',
@@ -60,7 +61,7 @@ export class LayoutService {
     this.initLayout();
   }
 
-getGridType(): string {
+  getGridType(): string {
     return this.options.gridType;
   }
 
@@ -76,10 +77,11 @@ getGridType(): string {
     this.layout.push({
       cols: 1,
       rows: 1,
-      x: x,
-      y: y,
-      appId: appId
+      x,
+      y,
+      appId
     });
+    this.saveToLocalStorage();
   }
 
   initLayout() {
@@ -94,6 +96,7 @@ getGridType(): string {
     const item = this.layout.find(itm => itm.appId === id);
     const itemIndex = this.layout.indexOf(item);
     this.layout.splice(itemIndex, 1);
+    this.saveToLocalStorage();
   }
 
   saveToLocalStorage() {
@@ -102,5 +105,9 @@ getGridType(): string {
 
   readFromLocalStorage() {
     this.layout = this.localStorageService.readFromLocalStorage();
+  }
+
+  itemChangeCallback() {
+    this.saveToLocalStorage();
   }
 }
