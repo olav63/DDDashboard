@@ -1,18 +1,19 @@
-import { Injectable, OnInit } from '@angular/core';
-import { GridsterConfig, GridsterItem, DisplayGrid, GridsterComponentInterface, GridsterItemComponentInterface, GridsterComponent } from 'angular-gridster2';
-import { LocalStorageServiceService } from './local-storage.service';
-import { HostListener } from "@angular/core";
+import { HostListener, Injectable } from '@angular/core';
+import { DisplayGrid, GridsterConfig, GridsterItem } from 'angular-gridster2';
+import { UUID } from 'angular2-uuid';
 import { DeviceService } from './device.service';
+import { LocalStorageServiceService } from './local-storage.service';
+import { LayoutConfig } from './layout-config';
 
 export interface IComponent {
-  pos: Position,
+  pos: Position;
   id: string;
   componentRef: string;
 }
 
 interface Position {
-  x: number,
-  y: number
+  x: number;
+  y: number;
 }
 
 @Injectable({
@@ -20,33 +21,8 @@ interface Position {
 })
 
 export class LayoutService {
-  public options: GridsterConfig = {
-    gridType: 'fit',
-    swap: false,
-    pushItems: false,
-    compactType: 'compactUp&Left',
-    displayGrid: DisplayGrid.Always,
-    mobileBreakpoint: 120,
-    draggable: {
-      enabled: true,
-    },
-    itemChangeCallback: this.itemChangeCallback.bind(this),
-    defaultItemCols: 1,
-    defaultItemRows: 1,
-    minRows: 0,
-    maxRows: 5,
-    minCols: 0,
-    maxCols: 5,
-    margin: 5,
-    fixedRowHeight: 100,
-    fixedColWidth: 100,
-    resizable: {
-      enabled: false
-    }
-  };
-
+  public options: LayoutConfig = new LayoutConfig();
   public layout: GridsterItem[] = [];
-
   dropId: string;
   screenHeight: number;
   screenWidth: number;
@@ -66,20 +42,20 @@ export class LayoutService {
   }
 
   getSwap(): string {
-    return this.options.swap === true ? 'swap' : 'no swap';
+    return this.options.swap ? 'swap' : 'no swap';
   }
 
   getPush(): string {
-    return this.options.pushItems === true? 'push' : 'no push';
+    return this.options.pushItems ? 'push' : 'no push';
   }
 
-  addItem(appId: string, x: number, y: number): void {
+  addItem(x: number, y: number): void {
     this.layout.push({
       cols: 1,
       rows: 1,
       x,
       y,
-      appId
+      id: UUID.UUID()
     });
     this.saveToLocalStorage();
   }
@@ -88,6 +64,7 @@ export class LayoutService {
     this.readFromLocalStorage();
     const isMobile = this.deviceService.isMobile();
     const isTablet = this.deviceService.isTablet();
+    this.options.itemChangeCallback = this.itemChangeCallback.bind(this);
     this.options.gridType = isMobile ? 'fit' : 'fixed';
     this.options.swap = isMobile;
     this.options.pushItems = isMobile || isTablet;
@@ -95,9 +72,14 @@ export class LayoutService {
   }
 
   deleteItem(id: string): void {
-    const item = this.layout.find(itm => itm.appId === id);
+    const item = this.layout.find(itm => itm.id === id);
     const itemIndex = this.layout.indexOf(item);
     this.layout.splice(itemIndex, 1);
+    this.saveToLocalStorage();
+  }
+
+  deleteAllItems() {
+    this.layout.splice(0, this.layout.length);
     this.saveToLocalStorage();
   }
 

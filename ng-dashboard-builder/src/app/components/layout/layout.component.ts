@@ -1,8 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
-import { LayoutService, IComponent } from '../../services/layout.service';
 import { DeviceService } from 'src/app/services/device.service';
-import { HostListener } from "@angular/core";
+import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-layout',
@@ -15,7 +14,7 @@ export class LayoutComponent implements OnInit {
   screenWidth: number = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])
-  onResize(event?) {
+  onResize(event?: any) {
     this.screenHeight = window.innerHeight;
     this.screenWidth = window.innerWidth;
   }
@@ -26,6 +25,10 @@ export class LayoutComponent implements OnInit {
 
   getScreenHeight(): string {
     return this.screenHeight.toString();
+  }
+
+  getReadableId(item: GridsterItem): string {
+    return item.id.toString().substring(0, 4);
   }
 
   get options(): GridsterConfig {

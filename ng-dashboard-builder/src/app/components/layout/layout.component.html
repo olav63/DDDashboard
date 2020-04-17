@@ -25,18 +25,14 @@
 </div>
 <br>
 <div class="toolbar">
-  <button (click)="layoutService.addItem('app A', 0, 0)">+ app A</button>
-  <button (click)="layoutService.addItem('app B', 0, 0)">+ app B</button>
-  <button (click)="layoutService.addItem('app C',0 ,0 )">+ app C</button>
-  <!-- <button (click)="layoutService.saveToLocalStorage()">Save dashboard</button>
-  <button (click)="layoutService.readFromLocalStorage()">Restore dashboard</button> -->
+  <button (click)="layoutService.addItem(0, 0)">Add item</button>
+  <button (click)="layoutService.deleteAllItems()">Remove all items</button>
 </div>
 <gridster [options]="options">
   <gridster-item *ngFor="let item of layout" [item]="item" >
     <div style="display:table-row;">
-      <div><button (click)="layoutService.deleteItem(item.appId)"> X </button></div>
-      <br>
-      <div><b>{{item.appId}}</b> [{{item.x}}, {{item.y}}]</div>
+      <div><button (click)="layoutService.deleteItem(item.id)"> X </button></div>
+      <div>id: {{getReadableId(item)}}<br>pos: [{{item.x}}, {{item.y}}]</div>
     </div>
   </gridster-item>
 </gridster>

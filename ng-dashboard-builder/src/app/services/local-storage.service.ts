@@ -6,36 +6,36 @@ import { GridsterItem } from 'angular-gridster2';
 })
 
 export class LocalStorageServiceService {
-  public saveToLocalStorage(layout: GridsterItem[]) {
+  public saveToLocalStorage(items: GridsterItem[]) {
     localStorage.clear();
-    layout.forEach(item => {
+    items.forEach(item => {
       const position = this.positionToString(item.x, item.y);
-      localStorage.setItem(item.appId, position);
+      localStorage.setItem(item.id, position);
     });
   }
 
   private positionToString(x: number, y: number): string {
-    let result = "#x:" + x.toString() + "#y:" + y.toString();
+    const result = '#x:' + x.toString() + '#y:' + y.toString();
     return result;
   }
 
   public readFromLocalStorage(): GridsterItem[] {
-    const layout: GridsterItem[] = [];
+    const items: GridsterItem[] = [];
     const localStorageSize = localStorage.length;
     for (let i = 0; i < localStorageSize; i++) {
-      const appId = localStorage.key(i);
-      const positionString = localStorage.getItem(appId);
+      const id = localStorage.key(i);
+      const positionString = localStorage.getItem(id);
       const position: number[] = this.positionStringToPosition(positionString);
       const restoredItem = {
         cols: 1,
         rows: 1,
         x: position[0],
         y: position[1],
-        appId: appId
+        id
       };
-      layout.push(restoredItem)
+      items.push(restoredItem);
     }
-    return layout;
+    return items;
   }
 
   private positionStringToPosition(itemString: string): number[] {
