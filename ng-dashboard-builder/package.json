@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "devstart": "ng serve --port 4200"
   },
   "private": true,
   "dependencies": {
@@ -21,7 +22,6 @@
     "@angular/router": "~9.0.7",
     "angular-gridster2": "9.1.0",
     "angular2-uuid": "1.1.1",
-    "ng2-device-detector": "^1.0.1",
     "ngx-device-detector": "^1.4.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.11.1",
