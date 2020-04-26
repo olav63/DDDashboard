@@ -4,10 +4,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 @Injectable({
   providedIn: 'root'
 })
-export class DeviceService {
-  screenWidth: number;
-  screenHeight: number;
 
+export class DeviceService {
   constructor(private service: DeviceDetectorService) {
   }
 
@@ -23,6 +21,14 @@ export class DeviceService {
     } 
 
     return result;
+  }
+
+  public getScreenWidth() {
+    return window.innerWidth;
+  }
+
+  public getScreenHeight() {
+    return window.innerHeight;
   }
 
   public isMobile(): boolean {

@@ -20,6 +20,9 @@
       <td>
         <b>Browser:</b> {{deviceService.getBrowser()}} {{deviceService.getBrowserVersion()}}
       </td>
+      <td>
+        <b>cols:</b> {{layoutService.getMaxCols()}} width: {{layoutService.getFixedColWidth()}}
+      </td>
     </tr>
   </table>
 </div>
@@ -30,7 +33,8 @@
 </div>
 <gridster [options]="options">
   <gridster-item *ngFor="let item of layout" [item]="item" >
-    <div style="display:table-row;">
+    <!-- <div style="display:table-row; vertical-align: top;"> -->
+      <div style="display:table-row;">
       <div><button (click)="layoutService.deleteItem(item.id)"> X </button></div>
       <div>id: {{getReadableId(item)}}<br>pos: [{{item.x}}, {{item.y}}]</div>
     </div>

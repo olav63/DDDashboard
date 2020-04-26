@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { DeviceService } from 'src/app/services/device.service';
 import { LayoutService } from '../../services/layout.service';
@@ -9,7 +9,7 @@ import { LayoutService } from '../../services/layout.service';
   styleUrls: ['./layout.component.scss']
 })
 
-export class LayoutComponent implements OnInit {
+export class LayoutComponent implements OnInit, AfterViewInit {
   screenHeight: number = window.innerHeight;
   screenWidth: number = window.innerWidth;
 
@@ -17,6 +17,7 @@ export class LayoutComponent implements OnInit {
   onResize(event?: any) {
     this.screenHeight = window.innerHeight;
     this.screenWidth = window.innerWidth;
+    this.layoutService.initGrid();
   }
 
   getScreenWidth(): string {
@@ -40,6 +41,9 @@ export class LayoutComponent implements OnInit {
   }
 
   constructor(public layoutService: LayoutService, public deviceService: DeviceService) {
+  }
+
+  ngAfterViewInit(): void {
   }
 
   ngOnInit() {
