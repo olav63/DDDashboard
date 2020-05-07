@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
-import { GridsterConfig, GridsterItem } from 'angular-gridster2';
+import { AfterViewInit, Component, HostListener, Input, OnInit } from '@angular/core';
+import { GridsterConfig, GridsterItem, GridsterItemComponentInterface } from 'angular-gridster2';
 import { DeviceService } from 'src/app/services/device.service';
 import { LayoutService } from '../../services/layout.service';
 
@@ -10,6 +10,7 @@ import { LayoutService } from '../../services/layout.service';
 })
 
 export class LayoutComponent implements OnInit, AfterViewInit {
+  @Input() launchId;;
   screenHeight: number = window.innerHeight;
   screenWidth: number = window.innerWidth;
 
@@ -30,6 +31,13 @@ export class LayoutComponent implements OnInit, AfterViewInit {
 
   getReadableId(item: GridsterItem): string {
     return item.id.toString().substring(0, 4);
+  }
+
+  launchApp(item: GridsterItem) {
+    if (!this.deviceService.isDesktop() || item.armed) {
+      this.launchId = this.getReadableId(item);
+    }
+    item.armed = true;
   }
 
   get options(): GridsterConfig {

@@ -31,7 +31,8 @@ export class LocalStorageServiceService {
         rows: 1,
         x: position[0],
         y: position[1],
-        id
+        id,
+        armed: true
       };
       items.push(restoredItem);
     }

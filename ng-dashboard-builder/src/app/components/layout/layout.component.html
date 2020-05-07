@@ -1,42 +1,44 @@
-<div><div>
-  <table>
-    <tr>
-      <td>
-        <b>Device:</b> {{deviceService.getDeviceCat()}}
-      </td>
-      <td>
-        <b>Sceen size:</b> x: {{getScreenWidth()}} y: {{getScreenHeight()}}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <b>OS:</b> {{deviceService.getOS()}} {{deviceService.getOSVersion()}}
-      </td>
-      <td>
-        <b>Layout:</b> {{layoutService.getGridType()}} / {{layoutService.getSwap()}} / {{layoutService.getPush()}}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <b>Browser:</b> {{deviceService.getBrowser()}} {{deviceService.getBrowserVersion()}}
-      </td>
-      <td>
-        <b>cols:</b> {{layoutService.getMaxCols()}} width: {{layoutService.getFixedColWidth()}}
-      </td>
-    </tr>
-  </table>
-</div>
-<br>
-<div class="toolbar">
-  <button (click)="layoutService.addItem(0, 0)">Add item</button>
-  <button (click)="layoutService.deleteAllItems()">Remove all items</button>
-</div>
-<gridster [options]="options">
-  <gridster-item *ngFor="let item of layout" [item]="item" >
-    <!-- <div style="display:table-row; vertical-align: top;"> -->
+<div style="background-color: antiquewhite;">
+  <div>
+    <table>
+      <tr>
+        <td>
+          <b>Device:</b> {{deviceService.getDeviceCat()}} / {{deviceService.getOS()}} {{deviceService.getOSVersion()}} /
+          {{deviceService.getBrowser()}} {{deviceService.getBrowserVersion()}}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Sceen size:</b> x: {{getScreenWidth()}} y: {{getScreenHeight()}}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Layout:</b> {{layoutService.getGridType()}} / {{layoutService.getCompactType()}} /
+          {{layoutService.getSwap()}} / {{layoutService.getPush()}}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Columns:</b> {{layoutService.getMaxCols()}} / width: {{layoutService.getFixedColWidth()}} / margin:
+          {{layoutService.getMargin()}}
+        </td>
+      </tr>
+    </table>
+  </div>
+  <br>
+  <div class="toolbar" style="background-color:aliceblue">
+    <button (click)="layoutService.addItem(0, 0)">Add item</button>
+    <button (click)="layoutService.deleteAllItems()">Remove all items</button>
+  </div>
+  <div class="toolbar" style="background-color:lightcyan">
+    Recently launched item: {{launchId}}
+  </div>
+  <gridster [options]="options" style="background-color:lightgrey">
+    <gridster-item *ngFor="let item of layout" [item]="item" (click)="launchApp(item)">
       <div style="display:table-row;">
-      <div><button (click)="layoutService.deleteItem(item.id)"> X </button></div>
-      <div>id: {{getReadableId(item)}}<br>pos: [{{item.x}}, {{item.y}}]</div>
-    </div>
-  </gridster-item>
-</gridster>
+        <div><button (click)="layoutService.deleteItem(item.id)"> X </button></div>
+        <div>id: {{getReadableId(item)}}<br>pos: [{{item.x}}, {{item.y}}]</div>
+      </div>
+    </gridster-item>
+  </gridster>
