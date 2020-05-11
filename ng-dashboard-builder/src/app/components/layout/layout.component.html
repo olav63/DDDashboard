@@ -35,10 +35,8 @@
     Recently launched item: {{launchId}}
   </div>
   <gridster [options]="options" style="background-color:lightgrey">
-    <gridster-item *ngFor="let item of layout" [item]="item" (click)="launchApp(item)">
-      <div style="display:table-row;">
-        <div><button (click)="layoutService.deleteItem(item.id)"> X </button></div>
-        <div>id: {{getReadableId(item)}}<br>pos: [{{item.x}}, {{item.y}}]</div>
-      </div>
+    <gridster-item *ngFor="let item of layout" [item]="item" (click)="launchApp(item)" [@showHide]="alive ? ':enter' : ':leave'">
+      <app-tile [id]="item.id" [x]="item.x" [y]="item.y" (delete)="deleteItem(item.id)">
+      </app-tile>
     </gridster-item>
   </gridster>

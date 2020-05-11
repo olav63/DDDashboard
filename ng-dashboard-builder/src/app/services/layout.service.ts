@@ -3,6 +3,7 @@ import { DisplayGrid, GridsterConfig, GridsterItem, GridsterComponent } from 'an
 import { UUID } from 'angular2-uuid';
 import { DeviceService } from './device.service';
 import { LocalStorageServiceService } from './local-storage.service';
+import { TileComponent } from '../components/tiles/tile/tile.component';
 
 export const DEFAULT_TILE_SIZE = [100, 100];
 export const MIN_TILE_SIZE = [75, 75];
@@ -33,7 +34,8 @@ export class LayoutService {
         enabled: true,
         delayStart: 250,
         start: this.dragStart.bind(this),
-        stop: this.dragStop.bind(this)
+        stop: this.dragStop.bind(this),
+        ignoreContentClass: 'TileComponent',
       },
       defaultItemCols: 1,
       defaultItemRows: 1,
