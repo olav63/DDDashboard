@@ -4,6 +4,7 @@ import { UUID } from 'angular2-uuid';
 import { DeviceService } from './device.service';
 import { LocalStorageServiceService } from './local-storage.service';
 import { TileComponent } from '../components/tiles/tile/tile.component';
+import { R3TargetBinder } from '@angular/compiler';
 
 export const DEFAULT_TILE_SIZE = [100, 100];
 export const MIN_TILE_SIZE = [75, 75];
@@ -26,7 +27,8 @@ export class LayoutService {
     this.options = {
       gridType:'fixed',
       swap: false,
-      pushItems: false,
+      pushItems: true,
+      scrollToNewItems: true,
       compactTypes: 'compactUp&Left',
       displayGrid: DisplayGrid.None,
       mobileBreakpoint: 120,
@@ -58,15 +60,13 @@ export class LayoutService {
 
   private initTabletGrid() {
     this.initHandHeldGrid();
-    this.options.pushItems = true;
   }
 
   private initHandHeldGrid() {
     const screenWidth = this.deviceService.getScreenWidth();
-    const screenHeight = this.deviceService.getScreenHeight();
     this.options.maxCols = Math.floor(screenWidth / DEFAULT_TILE_SIZE[0]);
     this.options.margin = Math.floor((screenWidth - this.options.maxCols * DEFAULT_TILE_SIZE[0]) / (this.options.maxCols - 1));
-    this.options.fixedColWidth = Math.floor((screenWidth - (this.options.maxCols - 1 ) * this.options.margin) / this.options.maxCols);
+    this.options.fixedColWidth = Math.floor((screenWidth - (this.options.maxCols - 1 ) * this.options.margin) / this.options.maxCols) - 10;
     this.options.fixedRowHeight = this.options.fixedColWidth;
     this.options.outerMargin = false;
   }
@@ -74,13 +74,14 @@ export class LayoutService {
   private initMobileGrid() {
     this.initHandHeldGrid();
     this.options.compactType = 'compactUp&Left';
-    this.options.swap = true;
+    
   }
 
   private initDesktopGrid() {
     this.options.fixedColWidth = DEFAULT_TILE_SIZE[0];
     this.options.fixedRowHeight = DEFAULT_TILE_SIZE[1];
-    this.options.margin = DEFAULT_TILE_SIZE[0] / 10
+    this.options.margin = Math.floor(DEFAULT_TILE_SIZE[0] / 10);
+    this.options.pushItems = false;
   }
 
   getGridType(): string {
@@ -115,12 +116,13 @@ export class LayoutService {
     return this.options.compactType ? this.options.compactType : 'no compact type';
   }
 
-  addItem(x: number, y: number): void {
+  addItem(x: number, y: number, cols?: number, rows?: number): void {
     this.layout.push({
-      cols: 1,
-      rows: 1,
+      cols,
+      rows,
       x,
       y,
+      color: '#00FF00',
       id: UUID.UUID(),
       armed: true
     });

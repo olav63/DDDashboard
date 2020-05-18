@@ -1,4 +1,5 @@
-<div style="display:table-row;">
+<div style="display:table-row;"
+ [@showHide]="vanish ? 'invisible' : 'visible'" (@showHide.start)="onShowHide($event)" (@showHide.done)="onShowHide($event)">
     <button (click)="remove()"> X </button>
     <p>{{getReadableId()}}</p>
     <p>[{{x}}, {{y}}]</p>

@@ -9,13 +9,13 @@ export class LocalStorageServiceService {
   public saveToLocalStorage(items: GridsterItem[]) {
     localStorage.clear();
     items.forEach(item => {
-      const position = this.positionToString(item.x, item.y);
-      localStorage.setItem(item.id, position);
+      const location = this.location(item.x, item.y, item.cols, item.rows);
+      localStorage.setItem(item.id, location);
     });
   }
 
-  private positionToString(x: number, y: number): string {
-    const result = '#x:' + x.toString() + '#y:' + y.toString();
+  private location(x: number, y: number, cols: number, rows: number): string {
+    const result = '#x:' + x.toString() + '#y:' + y.toString() + '#col:' + cols.toString()  + '#row:' + rows.toString();
     return result;
   }
 
@@ -24,14 +24,16 @@ export class LocalStorageServiceService {
     const localStorageSize = localStorage.length;
     for (let i = 0; i < localStorageSize; i++) {
       const id = localStorage.key(i);
-      const positionString = localStorage.getItem(id);
-      const position: number[] = this.positionStringToPosition(positionString);
+      const tileString = localStorage.getItem(id);
+      const position: number[] = this.tileStringToPosition(tileString);
+      const size: number[] =  this.tileStringToSize(tileString);
       const restoredItem = {
-        cols: 1,
-        rows: 1,
+        cols: size[0],
+        rows: size[1],
         x: position[0],
         y: position[1],
         id,
+        color: '#AAAAAA',
         armed: true
       };
       items.push(restoredItem);
@@ -39,11 +41,20 @@ export class LocalStorageServiceService {
     return items;
   }
 
-  private positionStringToPosition(itemString: string): number[] {
-    const xMarker: number = itemString.search('#x:');
-    const yMarker: number = itemString.search('#y:');
-    const xString: string = itemString.substring(xMarker + '#x:'.length, yMarker);
-    const yString: string = itemString.substr(yMarker + '#y:'.length);
+  private tileStringToSize(tileString: string): number[] {
+    const colMarker: number = tileString.search('#col:');
+    const rowMarker: number = tileString.search('#row:');
+    const colString: string = tileString.substring(colMarker + '#col:'.length, rowMarker);
+    const rowString: string = tileString.substr(rowMarker + '#row:'.length);
+    return [Number(colString), Number(rowString)];
+  }
+
+  private tileStringToPosition(tileString: string): number[] {
+    const xMarker: number = tileString.search('#x:');
+    const yMarker: number = tileString.search('#y:');
+    const colMarker: number = tileString.search('#col:');
+    const xString: string = tileString.substring(xMarker + '#x:'.length, yMarker);
+    const yString: string = tileString.substring(yMarker + '#y:'.length, colMarker);
     return [Number(xString), Number(yString)];
   }
 }

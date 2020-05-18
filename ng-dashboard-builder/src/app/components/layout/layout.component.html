@@ -28,15 +28,16 @@
   </div>
   <br>
   <div class="toolbar" style="background-color:aliceblue">
-    <button (click)="layoutService.addItem(0, 0)">Add item</button>
+    <button (click)="layoutService.addItem(0, 0, 1, 1)">Add item</button>
+    <button (click)="layoutService.addItem(0, 0, 2, 2)">Add large item</button>
     <button (click)="layoutService.deleteAllItems()">Remove all items</button>
   </div>
   <div class="toolbar" style="background-color:lightcyan">
     Recently launched item: {{launchId}}
   </div>
   <gridster [options]="options" style="background-color:lightgrey">
-    <gridster-item *ngFor="let item of layout" [item]="item" (click)="launchApp(item)" [@showHide]="alive ? ':enter' : ':leave'">
-      <app-tile [id]="item.id" [x]="item.x" [y]="item.y" (delete)="deleteItem(item.id)">
+    <gridster-item *ngFor="let item of layout" [item]="item" (click)="launchApp(item)">
+      <app-tile [id]="item.id" [x]="item.x" [y]="item.y" [color]="item.color" (delete)="deleteItem(item.id)">
       </app-tile>
     </gridster-item>
   </gridster>
