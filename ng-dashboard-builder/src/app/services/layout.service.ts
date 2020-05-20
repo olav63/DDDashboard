@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { DisplayGrid, GridsterConfig, GridsterItem, GridsterComponent } from 'angular-gridster2';
+import { DisplayGrid, GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { UUID } from 'angular2-uuid';
 import { DeviceService } from './device.service';
 import { LocalStorageServiceService } from './local-storage.service';
-import { TileComponent } from '../components/tiles/tile/tile.component';
-import { R3TargetBinder } from '@angular/compiler';
 
 export const DEFAULT_TILE_SIZE = [100, 100];
 export const MIN_TILE_SIZE = [75, 75];

@@ -1,6 +1,17 @@
-<div style="display:table-row;"
- [@showHide]="vanish ? 'invisible' : 'visible'" (@showHide.start)="onShowHide($event)" (@showHide.done)="onShowHide($event)">
-    <button (click)="remove()"> X </button>
-    <p>{{getReadableId()}}</p>
-    <p>[{{x}}, {{y}}]</p>
-</div>
+<div *ngIf="cols===1 && rows===1; then renderItem else renderLargeItem"></div>
+<ng-template #renderItem>
+    <div style="display:table-row;" [@showHide]="vanish ? 'invisible' : 'visible'"
+        (@showHide.done)="onShowHideDone($event)">
+        <button (click)="remove()"> X </button>
+        <p>{{getReadableId()}}</p>
+        <p>[{{x}}, {{y}}]</p>
+    </div>
+</ng-template>
+<ng-template #renderLargeItem>
+    <div style="display:table-row;" [@showHideLarge]="vanish ? 'invisible' : 'visible'"
+        (@showHideLarge.done)="onShowHideDone($event)">
+        <button (click)="remove()"> X </button>
+        <p>{{getReadableId()}}</p>
+        <p>[{{x}}, {{y}}]</p>
+    </div>
+</ng-template>

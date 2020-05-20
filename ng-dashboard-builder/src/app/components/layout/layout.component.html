@@ -37,7 +37,7 @@
   </div>
   <gridster [options]="options" style="background-color:lightgrey">
     <gridster-item *ngFor="let item of layout" [item]="item" (click)="launchApp(item)">
-      <app-tile [id]="item.id" [x]="item.x" [y]="item.y" [color]="item.color" (delete)="deleteItem(item.id)">
+      <app-tile [id]="item.id" [x]="item.x" [y]="item.y" [cols]="item.cols" [rows]="item.rows" [color]="item.color" (delete)="deleteItem(item.id)">
       </app-tile>
     </gridster-item>
   </gridster>
