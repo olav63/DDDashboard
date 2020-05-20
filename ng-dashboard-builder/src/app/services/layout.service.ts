@@ -29,7 +29,6 @@ export class LayoutService {
       swap: false,
       pushItems: true,
       scrollToNewItems: true,
-      compactTypes: 'compactUp&Left',
       displayGrid: DisplayGrid.None,
       mobileBreakpoint: 120,
       draggable: {
